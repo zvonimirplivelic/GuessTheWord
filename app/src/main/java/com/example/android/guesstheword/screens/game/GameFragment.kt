@@ -29,6 +29,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.GameFragmentBinding
+import kotlinx.android.synthetic.main.game_fragment.*
 
 /**
  * Fragment where the game is played
@@ -58,11 +59,28 @@ class GameFragment : Fragment() {
         binding.gameViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer<Boolean> {hasFinished ->
-            if(hasFinished) gameFinished()
+        viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer<Boolean> { hasFinished ->
+            if (hasFinished) gameFinished()
         })
 
+        viewModel.didUseHint.observe(viewLifecycleOwner, Observer<Boolean> { fabClicked ->
+            if (fabClicked) {
+                displayHint()
+            } else {
+                hideHint()
+            }
+        })
         return binding.root
+    }
+
+    private fun hideHint() {
+        binding.hintText.visibility = View.GONE
+        binding.showHintFab.isClickable = true
+    }
+
+    private fun displayHint() {
+        binding.hintText.visibility = View.VISIBLE
+        binding.showHintFab.isClickable = false
     }
 
     private fun gameFinished() {
