@@ -54,11 +54,11 @@
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
             android:fontFamily="sans-serif"
+            android:text="@{@string/quote_format(gameViewModel.word)}"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textColor="@color/black_text_color"
             android:textSize="34sp"
             android:textStyle="normal"
-            android:text="@{@string/quote_format(gameViewModel.word)}"
             app:layout_constraintBottom_toTopOf="@+id/score_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -68,6 +68,19 @@
             tools:text="&quot;Tuna&quot;" />
 
         <TextView
+            android:id="@+id/hint_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@{gameViewModel.wordHint}"
+            android:textSize="20sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/timer_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/word_text" />
+
+        <TextView
             android:id="@+id/timer_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,10 +88,10 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif"
+            android:text="@{gameViewModel.currentTimeString}"
             android:textColor="@color/grey_text_color"
             android:textSize="14sp"
             android:textStyle="normal"
-            android:text="@{gameViewModel.currentTimeString}"
             app:layout_constraintBottom_toTopOf="@+id/score_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -144,6 +157,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/show_hint_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_hint"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{() -> gameViewModel.onFabClick()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

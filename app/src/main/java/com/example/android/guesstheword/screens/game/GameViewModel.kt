@@ -15,7 +15,7 @@ class GameViewModel : ViewModel() {
     companion object {
         private const val DONE = 0L
         private const val ONE_SECOND = 1000L
-        private const val COUNTDOWN_TIME = 6000L
+        private const val COUNTDOWN_TIME = 60000L
     }
 
     private val _word = MutableLiveData<String>()
@@ -34,8 +34,19 @@ class GameViewModel : ViewModel() {
     val currentTime: LiveData<Long>
         get() = _currentTime
 
+    private val _didUseHint = MutableLiveData<Boolean>()
+    val didUseHint: LiveData<Boolean>
+        get() = _didUseHint
+
+
     val currentTimeString = Transformations.map(currentTime) { time ->
         DateUtils.formatElapsedTime(time)
+    }
+
+    val wordHint = Transformations.map(word) { word ->
+        val randomPosition = (1..word.length).random()
+        "Current word has " + word.length + " letters" + "\nThe letter at position " + randomPosition + " is " +
+                word.get(randomPosition - 1).toUpperCase()
     }
 
     // The list of words - the front of the list is the next word to guess
@@ -74,6 +85,7 @@ class GameViewModel : ViewModel() {
     init {
         _word.value = ""
         _score.value = 0
+        _didUseHint.value = false
         resetList()
         nextWord()
 
@@ -93,6 +105,7 @@ class GameViewModel : ViewModel() {
     }
 
     private fun nextWord() {
+        _didUseHint.value = false
         if (wordList.isEmpty()) {
             resetList()
         } else {
@@ -118,6 +131,10 @@ class GameViewModel : ViewModel() {
 
     fun onGameFinishComplete() {
         _eventGameFinish.value = false
+    }
+
+    fun onFabClick() {
+        _didUseHint.value = true
     }
 
     override fun onCleared() {
